@@ -1,0 +1,25 @@
+.landing {
+  display: flex;
+  text-align: center;
+}
+
+.upload {
+  display: flex;
+  justify-content: center;
+}
+
+.dropzone {
+  border-color: #eeeeee !important;
+  background-color: #9e9d9d !important;
+  color: #eeeded !important;
+  outline: none !important;
+  transition: border 0.24s ease-in-out !important;
+}
+
+.dropzone:focus {
+  border-color: #fabc48 !important;
+}
+
+.dropzone.disabled {
+  opacity: 0.6;
+}
