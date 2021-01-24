@@ -38,7 +38,7 @@ def generate_data():
     
     print(time.time() - start_time)
 
-@app.route('/api/process')
+@app.route('/api/process', methods=['GET', 'POST'])
 @cross_origin(supports_credentials=True)
 def process_data(data):
     """
