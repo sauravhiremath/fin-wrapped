@@ -58,6 +58,14 @@ function Home() {
     });
   };
 
+  const projectionsData = data["projections"];
+  const robustnessScore = projectionsData[0][`1`].filter(
+    (ele) => ele.name === "Robustness Score"
+  )[0].value;
+  const financialHealth = projectionsData[0][`1`].filter(
+    (ele) => ele.name === "Financial Health"
+  )[0].value;
+
   return (
     <Page size="large" dotBackdrop>
       <Page.Header></Page.Header>
@@ -81,13 +89,11 @@ function Home() {
               <Card.Content>
                 <h1
                   style={{
-                    color: getColorForPercentage(
-                      data["financial health"] / 100
-                    ),
+                    color: getColorForPercentage(financialHealth / 100),
                   }}
                 >
                   <NumberEasing
-                    value={data["financial health"]}
+                    value={financialHealth}
                     speed={3000}
                     decimals={1}
                     ease="cubicOut"
@@ -108,13 +114,11 @@ function Home() {
               <Card.Content>
                 <h1
                   style={{
-                    color: getColorForPercentage(
-                      data["robustness score"] / 100
-                    ),
+                    color: getColorForPercentage(robustnessScore / 100),
                   }}
                 >
                   <NumberEasing
-                    value={data["robustness score"]}
+                    value={robustnessScore}
                     speed={3000}
                     decimals={1}
                     ease="cubicOut"
