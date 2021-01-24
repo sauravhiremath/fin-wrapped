@@ -27,7 +27,7 @@ import {
   Image,
   Link,
 } from "@geist-ui/react";
-import { DownloadCloud } from "@geist-ui/react-icons";
+import { DownloadCloud, RefreshCw } from "@geist-ui/react-icons";
 import NumberEasing from "react-number-easing";
 import { useEffect, useState } from "react";
 import Calculation from "./Calculation";
