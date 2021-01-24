@@ -63,7 +63,6 @@ def process_data():
     next(csv_reader) #skip header
     for row in csv_reader:
         session.execute_async(insert_stmt, [uuid.uuid4(), doc_id, row[2], row[7], float(row[8]), row[9], float(row[10]), row[11]])
-        print("database operation failed!")
 
     dict = {'Amount':[], 'Date':[], 'Category':[]}
     cql_query = "SELECT amount, date, category FROM transactions.transaction_data WHERE doc_id={} ALLOW FILTERING".format(doc_id)
@@ -85,11 +84,10 @@ def process_data():
         projections.append(projection_dict)
 
     finance_per_categories = []
-    for col in df:
-        for category in  df[col].unique():
-            for index, row in prepare_df(df.loc[df["Category"] == category]).iterrows():
-                for name, value in row.items():
-                    finance_per_categories.append({'name': category, 'date': str(index), 'value': round(value, 2)})
+    for category in  df['Category'].unique():
+        for index, row in prepare_df(df.loc[df["Category"] == category]).iterrows():
+            for name, value in row.items():
+                finance_per_categories.append({'name': category, 'date': str(index), 'value': round(value, 2)})
     
     df_income = df.loc[df['Amount'] >= 0]
     df_expense = df.loc[df['Amount'] < 0]
