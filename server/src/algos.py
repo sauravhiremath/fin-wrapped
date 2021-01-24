@@ -9,7 +9,7 @@ import math
 
 INIT_AMT = 5000
 PERIODS = 6
-ALPHA = 0.75
+ALPHA = 0.15
 
 def estimate_rate(df, alpha=ALPHA):
     """Assumes df is a dataframe with only one column and proper indexing"""
@@ -110,14 +110,15 @@ def compute_projections(df, periods=PERIODS, init_bank_amt=INIT_AMT, alpha=ALPHA
     surv[surv < 0] = 0
     preds['Robustness Score'] = robustness_formula(surv)
 
-    # TODO: financial health and robustness
     income, expenses = get_income_expenses(df)
     income = prepare_df(income)
     expenses = prepare_df(expenses)
     income_stacked = pd.DataFrame(np.append(income['Amount'], preds['Total Income'].values))
     expenses_stacked = pd.DataFrame(np.append(expenses['Amount'], preds['Total Income'].values))
-    inc_rates = (income_stacked.diff()/income_stacked).ewm(alpha=ALPHA).mean().iloc[-periods:].values
-    exp_rates = (expenses_stacked.diff()/expenses_stacked).ewm(alpha=ALPHA).mean().iloc[-periods:].values
+    inc_rates = (income_stacked.diff()/income_stacked).ewm(alpha=alpha).mean().iloc[-periods:].values
+    exp_rates = (expenses_stacked.diff()/expenses_stacked).ewm(alpha=alpha).mean().iloc[-periods:].values
     preds['Financial Health'] = fin_health_formula(inc_rates, exp_rates)
+
+    preds.index = pd.Index([i for i in range(1, periods+1)])
 
     return preds
