@@ -9,8 +9,9 @@ import math
 
 INIT_AMT = 5000
 PERIODS = 6
+ALPHA = 0.75
 
-def estimate_rate(df, alpha=0.75):
+def estimate_rate(df, alpha=ALPHA):
     """Assumes df is a dataframe with only one column and proper indexing"""
     rates = df.diff() / df
     return rates.ewm(alpha=alpha).mean().iloc[-1,0]
@@ -25,7 +26,7 @@ def prepare_df(df):
 
 
 def sigmoid(num):
-    return 1 / (1 + math.exp(-num))
+    return 1 / (1 + np.exp(-num))
 
 
 def get_income_expenses(df):
@@ -34,16 +35,18 @@ def get_income_expenses(df):
     expenses = df_restr[df_restr['Amount'] < 0]
     return income, expenses
 
+def fin_health_formula(income_rate, expenses_rate):
+    return 100. * sigmoid(1.5 * (income_rate-expenses_rate))
 
 def compute_fin_health(df):
-    income, expenses = get_income_expenses(df)
 
+    income, expenses = get_income_expenses(df)
     income = prepare_df(income)
     expenses = prepare_df(expenses)
     income_rate = estimate_rate(income)
     expenses_rate = estimate_rate(expenses)
 
-    return 100. * sigmoid(1.5 * (income_rate-expense_rate))
+    return fin_health_formula(income_rate, expenses_rate)
 
 
 def estimate_survivability(df, init_amt=INIT_AMT):
@@ -56,12 +59,14 @@ def estimate_survivability(df, init_amt=INIT_AMT):
     expense_by_month = prepare_df(expenses)
     last_mo_expense = expense_by_month.iloc[-1,0]
 
-    return max(0, -bankroll/last_mo_expense) # expenses are negative
+    return max(0., -bankroll/last_mo_expense) # expenses are negative
 
+def robustness_formula(surv):
+    return 100*(1 - np.exp(-surv/5))
 
 def compute_robustness(df, init_amt=INIT_AMT):
     surv = estimate_survivability(df, init_amt)
-    return 100*(1 - math.exp(-surv/5))
+    return robustness_formula(surv)
 
 def get_terminal_val(df):
     return df.iloc[-3:-1,0].mean()
@@ -94,13 +99,25 @@ def compute_categ_projections(df, periods=PERIODS, init_bank_amt=INIT_AMT):
     return pd.DataFrame(categ_proj)
 
 
-def compute_projections(df, periods=PERIODS, init_bank_amt=INIT_AMT):
+def compute_projections(df, periods=PERIODS, init_bank_amt=INIT_AMT, alpha=ALPHA):
     preds = compute_categ_projections(df, periods, init_bank_amt)
-    preds['Total Income'] = pred[pred > 0].sum(axis=1)
-    preds['Total Expenses'] = pred[pred < 0].sum(axis=1)
+    preds['Total Income'] = preds[preds > 0].sum(axis=1)
+    preds['Total Expenses'] = preds[preds < 0].sum(axis=1)
     preds['Net Income'] = preds['Total Income'] + preds['Total Expenses']
     preds['Bank Value'] = preds['Net Income'].cumsum() + init_bank_amt
 
+    surv = -preds['Bank Value']/preds['Total Expenses']
+    surv[surv < 0] = 0
+    preds['Robustness Score'] = robustness_formula(surv)
+
     # TODO: financial health and robustness
+    income, expenses = get_income_expenses(df)
+    income = prepare_df(income)
+    expenses = prepare_df(expenses)
+    income_stacked = pd.DataFrame(np.append(income['Amount'], preds['Total Income'].values))
+    expenses_stacked = pd.DataFrame(np.append(expenses['Amount'], preds['Total Income'].values))
+    inc_rates = (income_stacked.diff()/income_stacked).ewm(alpha=ALPHA).mean().iloc[-periods:].values
+    exp_rates = (expenses_stacked.diff()/expenses_stacked).ewm(alpha=ALPHA).mean().iloc[-periods:].values
+    preds['Financial Health'] = fin_health_formula(inc_rates, exp_rates)
 
     return preds
