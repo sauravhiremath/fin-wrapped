@@ -24,7 +24,7 @@ function RobustnessScore({ data }) {
   const robustnessScore = data["robustness score"];
   const projectionsData = data["projections"];
   const originalData = data["original data"];
-  const [month, setMonth] = useState(1);
+  const [month, setMonth] = useState(0);
 
   const gradientOffset = () => {
     console.log(projectionsData[month][`${month + 1}`]);
@@ -64,7 +64,11 @@ function RobustnessScore({ data }) {
       <h3>
         Burnout Rate
         <Spacer />
-        <Select placeholder="Choose month" onChange={setMonth} initialValue="0">
+        <Select
+          placeholder="Choose month"
+          onChange={(v) => setMonth(parseInt(v))}
+          initialValue="0"
+        >
           <Select.Option value="0">Current month</Select.Option>
           <Select.Option value="1">Next Month</Select.Option>
           <Select.Option value="2">March</Select.Option>
