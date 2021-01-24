@@ -63,7 +63,6 @@ def process_data():
     next(csv_reader) #skip header
     for row in csv_reader:
         session.execute_async(insert_stmt, [uuid.uuid4(), doc_id, row[2], row[7], float(row[8]), row[9], float(row[10]), row[11]])
-        print("database operation failed!")
 
     dict = {'Amount':[], 'Date':[], 'Category':[]}
     cql_query = "SELECT amount, date, category FROM transactions.transaction_data WHERE doc_id={} ALLOW FILTERING".format(doc_id)
