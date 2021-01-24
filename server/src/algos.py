@@ -2,11 +2,13 @@
 Algorithm functions for use in FinWrapped
 """
 
+import numpy as np
 import pandas as pd
 
 import math
 
 INIT_AMT = 5000
+PERIODS = 6
 
 def estimate_rate(df, alpha=0.75):
     """Assumes df is a dataframe with only one column and proper indexing"""
@@ -64,3 +66,45 @@ def estimate_survivability(df, init_amt=INIT_AMT):
 def compute_robustness(df, init_amt=INIT_AMT):
     surv = estimate_survivability(df, init_amt)
     return 100*(1 - math.exp(-surv))
+
+def get_terminal_val(df):
+    return df.iloc[-3:-1,0].mean()
+
+
+def project_series(df, periods=PERIODS):
+    rates = estimate_rate(df) + np.ones(periods)
+    projections = np.ones_like(rates)
+
+    terminal_val = get_terminal_val(df)
+    projections[0] = terminal_val * rates[0]
+
+    for i in range(1, len(rates)):
+        projections[i] = projections[i-1] * rates[i]
+
+    return projections
+
+
+def project_category(df, category, periods=PERIODS):
+    categ_df = df[['Date', 'Category', 'Amount']]
+    categ_df = categ_df[categ_df['Category'] == category]
+    categ_df = prepare_df(categ_df)
+    return project_series(categ_df, periods)
+
+
+def compute_categ_projections(df, periods=PERIODS, init_bank_amt=INIT_AMT):
+    categs = df['Category'].unique()
+    categ_proj = {categ: project_category(df, categ, periods)
+                  for categ in categs}
+    return pd.DataFrame(categ_proj)
+
+
+def compute_projections(df, periods=PERIODS, init_bank_amt=INIT_AMT):
+    preds = compute_categ_projections(df, periods, init_bank_amt)
+    preds['Total Income'] = pred[pred > 0].sum(axis=1)
+    preds['Total Expenses'] = pred[pred < 0].sum(axis=1)
+    preds['Net Income'] = preds['Total Income'] + preds['Total Expenses']
+    preds['Bank Value'] = preds['Net Income'].cumsum() + init_bank_amt
+
+    # TODO: financial health and robustness
+
+    return preds
