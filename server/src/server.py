@@ -1,5 +1,4 @@
 from flask import Flask, request, jsonify
-from flask_cors import CORS, cross_origin
 from cassandra.cluster import Cluster
 from cassandra.auth import PlainTextAuthProvider
 from dotenv import load_dotenv
@@ -9,6 +8,7 @@ import pandas as pd
 import csv
 import uuid
 import os
+import json
 
 load_dotenv()
 
@@ -84,15 +84,13 @@ def process_data():
         projections.append(projection_dict)
 
     finance_per_categories = []
-    for category in  df['Category'].unique():
-        temp_dict = {}
-        for index, row in prepare_df(df.loc[df["Category"] == category]).iterrows():
-            for name, value in row.items():
-                if category in temp_dict:
-                    temp_dict[category].append({'date': str(index), 'value': round(value, 2)})
-                else:
-                    temp_dict[category] = [{'date': str(index), 'value': round(value, 2)}]
-        finance_per_categories.append(temp_dict)
+    finance_cats = df['Category'].unique()
+    for finance_cat in finance_cats:
+        finance_dict = {}
+        finance_dict[finance_cat] = []
+        for index, row in df.loc[df['Category'] == finance_cat].iterrows():
+            finance_dict[finance_cat].append({'date': row['Date'][3:], 'amount': row['Amount']})
+        finance_per_categories.append(finance_dict)
     
     df_income = df.loc[df['Amount'] >= 0]
     df_expense = df.loc[df['Amount'] < 0]
