@@ -74,55 +74,6 @@ def process_data():
 
     financial_health = round(compute_fin_health(df), 1)
     robustness_score = round(compute_robustness(df), 1)
-    calculated_projections = compute_projections(df).to_dict(orient='index')
-    projections = []
-    for index, row in df.iterrows():
-        projection_dict = {}
-        projection_dict[index] = []      
-        for col in row:
-            projection_dict[index].append({'name': col, 'value': row[col].values})
-
-    df_income = df.loc[df['Amount'] >= 0]
-    df_expense = df.loc[df['Amount'] < 0]
-
-    income_cats = df_income['Category'].unique()
-    income_data = []
-    for income_cat in income_cats:
-        income_data.append({"name": income_cat, "value": round(df_income['Amount'][df_income['Category'] == income_cat].sum(), 2)})
-
-    expense_data = []
-    expense_cats = df_expense['Category'].unique()
-    for expense_cat in expense_cats:
-        expense_data.append({"name": expense_cat, "value": -round(df_expense['Amount'][df_expense['Category'] == expense_cat].sum(), 2)})
-
-    response = {}
-    response["original data"] = df.to_dict(orient='records')
-    response["financial health"] = financial_health
-    response["robustness score"] = robustness_score
-    response["projections"] = projections
-    response["income data"] = income_data
-    response["expense data"] = expense_data
-
-    return json.dumps(response)
-
-if __name__ == "__main__":
-    # app.run(host="0.0.0.0", port=3001)
-    cloud_config= {'secure_connect_bundle': os.environ['SECURE_CONNECT_PATH']}
-    auth_provider = PlainTextAuthProvider(os.environ['DATABASE_USER'], os.environ['DATABASE_PASSWORD'])
-    cluster = Cluster(cloud=cloud_config, auth_provider=auth_provider)
-    session = cluster.connect()
-    session.set_keyspace('transactions')
-
-    dict = {'Amount':[], 'Date':[], 'Category':[]}
-    cql_query = "SELECT amount, date, category FROM transactions.transaction_data WHERE doc_id={} ALLOW FILTERING".format(0)
-    for row in session.execute(cql_query):
-        dict['Amount'].append(row.amount)
-        dict['Date'].append(row.date)
-        dict['Category'].append(row.category)
-    df = pd.DataFrame(dict)
-
-    financial_health = round(compute_fin_health(df), 1)
-    robustness_score = round(compute_robustness(df), 1)
     calculated_projections = compute_projections(df)
     projections = []
     for index, row in calculated_projections.iterrows():
@@ -153,6 +104,7 @@ if __name__ == "__main__":
     response["income data"] = income_data
     response["expense data"] = expense_data
 
-    with open('sample0.json', 'w') as f:
-        json.dump(response, f)
+    return json.dumps(response)
 
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=3001)
