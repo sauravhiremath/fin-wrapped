@@ -1,10 +1,10 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
 from cassandra.cluster import Cluster
 from cassandra.auth import PlainTextAuthProvider
 from dotenv import load_dotenv
 from algos import compute_fin_health, compute_robustness, compute_projections
-import json
+from io import StringIO
 import pandas as pd
 import csv
 import uuid
@@ -58,11 +58,12 @@ def process_data():
                                 """)
 
     doc_id = session.execute("SELECT MAX(doc_id) FROM transactions.transaction_data")[0].system_max_doc_id + 1
-    with open(request.files['file']) as csv_file:
-        csv_reader = csv.reader(csv_file, delimiter=',')
-        next(csv_reader) #skip header
-        for row in csv_reader:
-            session.execute_async(insert_stmt, [uuid.uuid4(), doc_id, row[2], row[7], float(row[8]), row[9], float(row[10]), row[11]])
+    newFile = request.files['file'].read()
+    csv_file = StringIO(newFile.decode("utf-8"))
+    csv_reader = csv.reader(csv_file, delimiter=',')
+    next(csv_reader) #skip header
+    for row in csv_reader:
+        session.execute_async(insert_stmt, [uuid.uuid4(), doc_id, row[2], row[7], float(row[8]), row[9], float(row[10]), row[11]])
 
     dict = {'Amount':[], 'Date':[], 'Category':[]}
     cql_query = "SELECT amount, date, category FROM transactions.transaction_data WHERE doc_id={} ALLOW FILTERING".format(doc_id)
@@ -97,7 +98,10 @@ def process_data():
     response["income data"] = income_data
     response["expense data"] = expense_data
 
-    return json.dumps(response)
+    res = jsonify(**response)
+    res.headers.add("Access-Control-Allow-Origin", "*")
+
+    return res
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=3001)

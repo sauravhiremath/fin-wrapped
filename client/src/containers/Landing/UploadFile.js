@@ -5,7 +5,7 @@ import { Card } from "@geist-ui/react";
 import { Upload } from "@geist-ui/react-icons";
 
 const UploadFile = ({ handleSubmit }) => {
-  const onDrop = useCallback((acceptedFiles) => {
+  const onDrop = useCallback((acceptedFiles, _, e) => {
     const reader = new FileReader();
     reader.onabort = () => console.log("file reading was aborted");
     reader.onerror = () => console.log("file reading has failed");
@@ -13,17 +13,18 @@ const UploadFile = ({ handleSubmit }) => {
       ev.preventDefault();
 
       const formData = new FormData();
-      const binaryStr = reader.result;
+      const binaryStr = acceptedFiles[0];
       formData.append("file", binaryStr);
-      fetch("http://34.105.210.187:3001/api/process", {
+      fetch("http://localhost:3001/api/process", {
         method: "POST",
-        headers: { "Content-Type": "multipart/form-data" },
         body: formData,
-      });
+      })
+        .then((res) => res.json())
+        .then((data) => console.log(data));
       console.log(formData);
     };
 
-    reader.readAsText(acceptedFiles[0]);
+    reader.readAsDataURL(acceptedFiles[0]);
     handleSubmit(acceptedFiles[0]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
