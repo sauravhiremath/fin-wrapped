@@ -62,7 +62,7 @@ def process_data(data):
             session.execute_async(insert_stmt, [uuid.uuid4(), doc_id, row[2], row[7], float(row[8]), row[9], float(row[10]), row[11]])
 
     dict = {'Amount':[], 'Date':[], 'Category':[]}
-    cql_query = "SELECT amount, date, category FROM transactions.transaction_data WHERE doc_id={} ALLOW FILTERING".format(0)
+    cql_query = "SELECT amount, date, category FROM transactions.transaction_data WHERE doc_id={} ALLOW FILTERING".format(doc_id)
     for row in session.execute(cql_query):
         dict['Amount'].append(row.amount)
         dict['Date'].append(row.date)
