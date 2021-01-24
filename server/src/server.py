@@ -20,22 +20,19 @@ def generate_data():
     auth_provider = PlainTextAuthProvider(os.environ['DATABASE_USER'], os.environ['DATABASE_PASSWORD'])
     cluster = Cluster(cloud=cloud_config, auth_provider=auth_provider)
     session = cluster.connect()
+    session.set_keyspace('transactions')
+    insert_stmt = session.prepare("""
+                                 INSERT INTO transactions.transaction_data
+                                 (id, doc_id, date, category, amount, currency, localamount, localcurrency)
+                                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                                 """)
 
-    doc_id = session.execute("SELECT MAX(doc_id) FROM transactions.transaction_data")[0]
-    print(doc_id)
-    # session.set_keyspace('transactions')
-    # insert_stmt = session.prepare("""
-    #                              INSERT INTO transactions.transaction_data
-    #                              (id, doc_id, date, category, amount, currency, localamount, localcurrency)
-    #                              VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    #                              """)
-
-    # with open('./datasets/Hairdressers_Dataset.csv', 'r') as csv_file:
-    #     csv_reader = csv.reader(csv_file, delimiter=',')
-    #     next(csv_reader) #skip header
-    #     for row in csv_reader:
-    #         session.execute_async(insert_stmt, [uuid.uuid4(), 0, row[2], row[7], float(row[8]), row[9], float(row[10]), row[11]])
-    #         print(row[0])
+    with open('./datasets/Hairdressers_Dataset.csv', 'r') as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter=',')
+        next(csv_reader) #skip header
+        for row in csv_reader:
+            session.execute_async(insert_stmt, [uuid.uuid4(), 0, row[2], row[7], float(row[8]), row[9], float(row[10]), row[11]])
+            print(row[0])
     
     print(time.time() - start_time)
 
@@ -57,12 +54,12 @@ def process_data(data):
                                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)
                                 """)
 
-    doc_id = session.execute("SELECT MAX(doc_id) FROM transactions.transaction_data") 
+    doc_id = session.execute("SELECT MAX(doc_id) FROM transactions.transaction_data")[0].system_max_doc_id + 1
     with open(data["csv_file"]) as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         next(csv_reader) #skip header
         for row in csv_reader:
-            session.execute_async(insert_stmt, [uuid.uuid4(), 0, row[2], row[7], float(row[8]), row[9], float(row[10]), row[11]])
+            session.execute_async(insert_stmt, [uuid.uuid4(), doc_id, row[2], row[7], float(row[8]), row[9], float(row[10]), row[11]])
 
     dict = {'Amount':[], 'Date':[], 'Category':[]}
     cql_query = "SELECT amount, date, category FROM transactions.transaction_data WHERE doc_id={} ALLOW FILTERING".format(0)
