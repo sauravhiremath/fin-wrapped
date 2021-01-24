@@ -144,8 +144,8 @@ function Home() {
                     data={data["expense data"]}
                     cx={250}
                     cy={200}
-                    innerRadius={100}
-                    outerRadius={120}
+                    innerRadius={80}
+                    outerRadius={100}
                     fill="#ffa500"
                     dataKey="value"
                     onMouseMove={({ name }) =>
@@ -179,10 +179,10 @@ function Home() {
                     activeIndex={incomeIndex}
                     activeShape={renderActiveShape}
                     dataKey="value"
-                    innerRadius={100}
-                    outerRadius={120}
+                    innerRadius={80}
+                    outerRadius={100}
                     data={data["income data"]}
-                    cx={220}
+                    cx={250}
                     cy={200}
                     fill="#ffa500"
                     onMouseMove={({ name }) =>
