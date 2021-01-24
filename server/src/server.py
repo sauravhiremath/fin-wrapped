@@ -13,7 +13,6 @@ import os
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app, support_credentials=True)
 
 def generate_data():
     import time
@@ -39,7 +38,6 @@ def generate_data():
     print(time.time() - start_time)
 
 @app.route('/api/process', methods=['GET', 'POST'])
-@cross_origin(supports_credentials=True)
 def process_data():
     """
     read, store, calculate
@@ -75,7 +73,14 @@ def process_data():
 
     financial_health = round(compute_fin_health(df), 1)
     robustness_score = round(compute_robustness(df), 1)
-    projections = compute_projections(df)
+    calculated_projections = compute_projections(df)
+    projections = []
+    for index, row in calculated_projections.iterrows():
+        projection_dict = {}
+        projection_dict[index] = []
+        for name, value in row.items():
+            projection_dict[index].append({'name': name, 'value': round(value, 2)})
+        projections.append(projection_dict)
 
     df_income = df.loc[df['Amount'] >= 0]
     df_expense = df.loc[df['Amount'] < 0]
@@ -94,7 +99,7 @@ def process_data():
     response["original data"] = df.to_dict(orient='records')
     response["financial health"] = financial_health
     response["robustness score"] = robustness_score
-    response["projections"] = projections.to_dict(orient='index')
+    response["projections"] = projections
     response["income data"] = income_data
     response["expense data"] = expense_data
 
