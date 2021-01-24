@@ -84,7 +84,7 @@ def process_data(data):
     expense_data = []
     expense_cats = df_expense['Category'].unique()
     for expense_cat in expense_cats:
-        expense_data.append({"name": expense_cat, "value":round(df_expense['Amount'][df_expense['Category'] == expense_cat].sum(), 2)})
+        expense_data.append({"name": expense_cat, "value": -round(df_expense['Amount'][df_expense['Category'] == expense_cat].sum(), 2)})
 
     response = {}
     response["original data"] = df.to_dict(orient='records')
