@@ -30,6 +30,23 @@ function FinancialScore({ data }) {
   )[0].value;
   console.log(financePerCategory);
 
+  const gradientOffset = () => {
+    const data = financePerCategory[category];
+    const dataMax = Math.max(...data.map((i) => i.amount));
+    const dataMin = Math.min(...data.map((i) => i.amount));
+
+    if (dataMax <= 0) {
+      return 0;
+    }
+    if (dataMin >= 0) {
+      return 1;
+    }
+
+    return dataMax / (dataMax - dataMin);
+  };
+
+  const off = gradientOffset();
+
   return (
     <Card type="lite">
       <h2>
