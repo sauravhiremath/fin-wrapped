@@ -58,7 +58,7 @@ def process_data(data):
                                 """)
 
     doc_id = session.execute("SELECT MAX(doc_id) FROM transactions.transaction_data")[0].system_max_doc_id + 1
-    with open(data["csv_file"]) as csv_file:
+    with open(data) as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         next(csv_reader) #skip header
         for row in csv_reader:
