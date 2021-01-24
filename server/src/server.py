@@ -77,14 +77,14 @@ def process_data(data):
     df_expense = df.loc[df['Amount'] < 0]
 
     income_cats = df_income['Category'].unique()
-    income_data = {}
+    income_data = []
     for income_cat in income_cats:
-        income_data[income_cat] = round(df_income['Amount'][df_income['Category'] == income_cat].sum(), 2)
+        income_data.append({"name": income_cat, "value": round(df_income['Amount'][df_income['Category'] == income_cat].sum(), 2)})
 
-    expense_data = {}
+    expense_data = []
     expense_cats = df_expense['Category'].unique()
     for expense_cat in expense_cats:
-        expense_data[expense_cat] = round(df_expense['Amount'][df_expense['Category'] == expense_cat].sum(), 2)
+        expense_data.append({"name": expense_cat, "value":round(df_expense['Amount'][df_expense['Category'] == expense_cat].sum(), 2)})
 
     response = {}
     response["original data"] = df.to_dict(orient='records')
