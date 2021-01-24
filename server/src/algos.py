@@ -69,7 +69,8 @@ def compute_robustness(df, init_amt=INIT_AMT):
     return robustness_formula(surv)
 
 def get_terminal_val(df):
-    return df.iloc[-3:-1,0].mean()
+    return df.iloc[-1,0]
+    # return df.iloc[-3:-1,0].mean()
 
 
 def project_series(df, periods=PERIODS):
@@ -100,25 +101,36 @@ def compute_categ_projections(df, periods=PERIODS, init_bank_amt=INIT_AMT):
 
 
 def compute_projections(df, periods=PERIODS, init_bank_amt=INIT_AMT, alpha=ALPHA):
+    income, expenses = get_income_expenses(df)
+    income = prepare_df(income)
+    expenses = prepare_df(expenses)
     preds = compute_categ_projections(df, periods, init_bank_amt)
+
+    ttl_income = income['Amount'].sum()
+    ttl_expenses = expenses['Amount'].sum()
+    amt = init_bank_amt + ttl_expenses + ttl_income
+
     preds['Total Income'] = preds[preds > 0].sum(axis=1)
     preds['Total Expenses'] = preds[preds < 0].sum(axis=1)
+
+# ALTERNATE COMPUTATION METHOD:
+# Predicting income and expenses separately may avoid error propagation
+#   preds['Total Income'] = project_series(income, periods=periods)
+#   preds['Total Expenses'] = project_series(expenses, periods=periods)
+
     preds['Net Income'] = preds['Total Income'] + preds['Total Expenses']
-    preds['Bank Value'] = preds['Net Income'].cumsum() + init_bank_amt
+    preds['Bank Value'] = preds['Net Income'].cumsum() + amt
 
     surv = -preds['Bank Value']/preds['Total Expenses']
     surv[surv < 0] = 0
     preds['Robustness Score'] = robustness_formula(surv)
 
-    income, expenses = get_income_expenses(df)
-    income = prepare_df(income)
-    expenses = prepare_df(expenses)
     income_stacked = pd.DataFrame(np.append(income['Amount'], preds['Total Income'].values))
     expenses_stacked = pd.DataFrame(np.append(expenses['Amount'], preds['Total Income'].values))
     inc_rates = (income_stacked.diff()/income_stacked).ewm(alpha=alpha).mean().iloc[-periods:].values
     exp_rates = (expenses_stacked.diff()/expenses_stacked).ewm(alpha=alpha).mean().iloc[-periods:].values
     preds['Financial Health'] = fin_health_formula(inc_rates, exp_rates)
 
-    preds.index = pd.Index([i for i in range(1, periods+1)])
+    preds.index = pd.Index([i for i in range(1, periods+1)]) # start index at 1
 
     return preds
