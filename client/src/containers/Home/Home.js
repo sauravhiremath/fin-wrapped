@@ -62,7 +62,7 @@ function Home() {
     <Page size="large" dotBackdrop>
       <Page.Header></Page.Header>
       <Page.Content id="home-print">
-        <Grid.Container gap={2} justify="center">
+        <Grid.Container gap={2} justify="center" alignItems="center">
           <Grid xs={19}>
             <h1>Monthly Report</h1>
           </Grid>
