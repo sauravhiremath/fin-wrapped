@@ -14,41 +14,56 @@ load_dotenv()
 app = Flask(__name__)
 
 def generate_data():
+    import time
+    start_time = time.time()
     cloud_config= {'secure_connect_bundle': os.environ['SECURE_CONNECT_PATH']}
     auth_provider = PlainTextAuthProvider(os.environ['DATABASE_USER'], os.environ['DATABASE_PASSWORD'])
     cluster = Cluster(cloud=cloud_config, auth_provider=auth_provider)
     session = cluster.connect()
 
-    session.set_keyspace('transactions')
-    with open('./datasets/Pizza_Takeaway_Dataset.csv', 'r') as csv_file:
-        csv_reader = csv.reader(csv_file, delimiter=',')
-        next(csv_reader) #skip header
-        for row in csv_reader:
-            session.execute("""
-                            INSERT INTO transactions.transaction_data
-                            (id, doc_id, date, category, amount, currency, localamount, localcurrency)
-                            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-                            """,
-                            (uuid.uuid4(), 0, row[2], row[7], float(row[8]), row[9], float(row[10]), row[11]))
-            print(row[0])
+    doc_id = session.execute("SELECT MAX(doc_id) FROM transactions.transaction_data")[0]
+    print(doc_id)
+    # session.set_keyspace('transactions')
+    # insert_stmt = session.prepare("""
+    #                              INSERT INTO transactions.transaction_data
+    #                              (id, doc_id, date, category, amount, currency, localamount, localcurrency)
+    #                              VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    #                              """)
+
+    # with open('./datasets/Hairdressers_Dataset.csv', 'r') as csv_file:
+    #     csv_reader = csv.reader(csv_file, delimiter=',')
+    #     next(csv_reader) #skip header
+    #     for row in csv_reader:
+    #         session.execute_async(insert_stmt, [uuid.uuid4(), 0, row[2], row[7], float(row[8]), row[9], float(row[10]), row[11]])
+    #         print(row[0])
+    
+    print(time.time() - start_time)
 
 @app.route('/api/process')
 def process_data(data):
     """
     read, store, calculate
     """
-    
-    DATABASEID = -1
-    with open(data["csv_file"]) as csv_file:
-        if csv_file.name == "Hairdressers_Dataset.csv":
-            DATABASEID = 1
-        if csv_file.name == "Pizza_Takeaway_Dataset.csv":
-            DATABASEID = 0
-    
+
     cloud_config= {'secure_connect_bundle': os.environ['SECURE_CONNECT_PATH']}
     auth_provider = PlainTextAuthProvider(os.environ['DATABASE_USER'], os.environ['DATABASE_PASSWORD'])
     cluster = Cluster(cloud=cloud_config, auth_provider=auth_provider)
     session = cluster.connect()
+    session.set_keyspace('transactions')
+
+    insert_stmt = session.prepare("""
+                                INSERT INTO transactions.transaction_data
+                                (id, doc_id, date, category, amount, currency, localamount, localcurrency)
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                                """)
+
+    doc_id = session.execute("SELECT MAX(doc_id) FROM transactions.transaction_data") 
+    with open(data["csv_file"]) as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter=',')
+        next(csv_reader) #skip header
+        for row in csv_reader:
+            session.execute_async(insert_stmt, [uuid.uuid4(), 0, row[2], row[7], float(row[8]), row[9], float(row[10]), row[11]])
+
     dict = {'Amount':[], 'Date':[], 'Category':[]}
     cql_query = "SELECT amount, date, category FROM transactions.transaction_data WHERE doc_id={} ALLOW FILTERING".format(0)
     for row in session.execute(cql_query):
@@ -85,4 +100,5 @@ def process_data(data):
     return json.dumps(response)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=3001)
+    # app.run(host="0.0.0.0", port=3001)
+    generate_data()
