@@ -23,6 +23,7 @@ function FinancialScore({ data }) {
   const financialScore = data["financial health"];
   const originalData = data["original data"];
   const projectionsData = getProjectionsBy(data["projections"]);
+  const financePerCategory = data["finance per category"]
   const [page, setPage] = useState(1);
   const [type, setType] = useState("Sales");
 
@@ -64,7 +65,7 @@ function FinancialScore({ data }) {
       <AreaChart
         width={1000}
         height={400}
-        data={projectionsData[type]}
+        data={financePerCategory}
         margin={{
           top: 10,
           right: 30,
@@ -73,7 +74,7 @@ function FinancialScore({ data }) {
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
+        <XAxis dataKey="date" />
         <YAxis />
         <Tooltip />
         <defs>
