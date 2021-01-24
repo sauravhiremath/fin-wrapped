@@ -24,10 +24,11 @@ function RobustnessScore({ data }) {
   const robustnessScore = data["robustness score"];
   const projectionsData = data["projections"];
   const originalData = data["original data"];
-  const [month, setMonth] = useState(0);
+  const [month, setMonth] = useState(1);
 
   const gradientOffset = () => {
-    const data = projectionsData[month][`${month}`];
+    console.log(projectionsData[month][`${month + 1}`]);
+    const data = projectionsData[month][`${month + 1}`].slice(0, -2);
     const dataMax = Math.max(...data.map((i) => i.value));
     const dataMin = Math.min(...data.map((i) => i.value));
 
@@ -76,7 +77,7 @@ function RobustnessScore({ data }) {
       <AreaChart
         width={1000}
         height={400}
-        data={projectionsData[month][`${month}`]}
+        data={projectionsData[month][`${month + 1}`].slice(0, -2)}
         margin={{
           top: 10,
           right: 30,

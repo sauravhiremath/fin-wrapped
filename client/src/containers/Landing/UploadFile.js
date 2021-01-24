@@ -15,7 +15,7 @@ const UploadFile = ({ handleSubmit }) => {
       const formData = new FormData();
       const binaryStr = acceptedFiles[0];
       formData.append("file", binaryStr);
-      fetch("http://localhost:3001/api/process", {
+      fetch("http://34.105.210.187:3001/api/process", {
         method: "POST",
         body: formData,
       })
