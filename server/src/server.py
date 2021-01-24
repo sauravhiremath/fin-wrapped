@@ -1,5 +1,4 @@
 from flask import Flask, request
-from flask_cors import CORS, cross_origin
 from cassandra.cluster import Cluster
 from cassandra.auth import PlainTextAuthProvider
 from dotenv import load_dotenv
@@ -13,7 +12,6 @@ import os
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app, support_credentials=True)
 
 def generate_data():
     import time
@@ -39,7 +37,6 @@ def generate_data():
     print(time.time() - start_time)
 
 @app.route('/api/process', methods=['GET', 'POST'])
-@cross_origin(supports_credentials=True)
 def process_data():
     """
     read, store, calculate
