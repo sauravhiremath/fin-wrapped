@@ -1,5 +1,7 @@
 import "./Home.css";
 import { useCookies } from "react-cookie";
+import html2canvas from "html2canvas";
+import { jsPDF } from "jspdf";
 import {
   PieChart,
   Pie,
@@ -25,6 +27,7 @@ import {
   Image,
   Link,
 } from "@geist-ui/react";
+import { DownloadCloud } from "@geist-ui/react-icons";
 import NumberEasing from "react-number-easing";
 import { useEffect, useState } from "react";
 import Calculation from "./Calculation";
@@ -35,7 +38,7 @@ import { getColorForPercentage } from "../../helpers";
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
 function Home() {
-  const doc = 'pizza';
+  const doc = "pizza";
   const [cookies] = useCookies(["finWrapped"]);
   const [pieIndex, setPieIndex] = useState(0);
   const [incomeIndex, setIncomeIndex] = useState(0);
@@ -45,13 +48,33 @@ function Home() {
     return <Redirect to="/" />;
   }
 
+  const printDocument = () => {
+    const input = document.getElementById("home-print");
+    html2canvas(input).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF();
+      pdf.addImage(imgData, "JPEG", 0, 0);
+      pdf.save("monthlyReportJan2021.pdf");
+    });
+  };
+
   return (
     <Page size="large" dotBackdrop>
       <Page.Header></Page.Header>
-      <Page.Content>
+      <Page.Content id="home-print">
         <Grid.Container gap={2} justify="center">
-          <Grid xs={20}>
+          <Grid xs={19}>
             <h1>Monthly Report</h1>
+          </Grid>
+          <Grid xs={5}>
+            <Button
+              icon={<DownloadCloud />}
+              shadow
+              type="secondary"
+              onClick={printDocument}
+            >
+              Export as PDF
+            </Button>
           </Grid>
           <Grid xs={12}>
             <Card shadow>
