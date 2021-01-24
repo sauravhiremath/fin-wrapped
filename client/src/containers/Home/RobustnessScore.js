@@ -67,7 +67,7 @@ function RobustnessScore({ data }) {
       There is quite some scope for improvement. See statistics below!
       <Spacer y={2} />
       <h3>
-        Burnout Rate
+        Projections by Category
         <Spacer />
         <Select
           placeholder="Choose month"
@@ -111,25 +111,6 @@ function RobustnessScore({ data }) {
           fill="url(#splitColor)"
         />
       </AreaChart>
-      <Spacer />
-      <Spacer y={3} />
-      <FinanceTips />
-      <Spacer y={3} />
-      <Note label="HOW IS IT CALCULATED?">
-        <Spacer />
-        The Financial Score scales directly with excess growth in incomes when
-        compared with growth in expenses. This means that even if your bank
-        account doesn’t look great, you can be financially healthy in the long
-        run as long as your incomes are growing faster than your expenses. To
-        improve your score, try to develop a trend of growing incomes and
-        regularly cutting costs.
-        <Spacer />
-        Here’s the formula, <InlineMath>{"m"}</InlineMath> is your survivability{" "}
-        , which measures how many times over your account could cover last
-        month’s expenses.
-        <Spacer />
-        <BlockMath>{`100(1 - e^{-m/5})`}</BlockMath>
-      </Note>
     </Card>
   );
 }

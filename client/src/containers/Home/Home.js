@@ -26,18 +26,20 @@ import {
   Link,
 } from "@geist-ui/react";
 import NumberEasing from "react-number-easing";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Calculation from "./Calculation";
-import mockData from "../../data.json";
+import hairData from "../../hairData.json";
+import pizzaData from "../../pizzaData.json";
 import { getColorForPercentage } from "../../helpers";
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
 function Home() {
+  const doc = 'pizza';
   const [cookies] = useCookies(["finWrapped"]);
   const [pieIndex, setPieIndex] = useState(0);
   const [incomeIndex, setIncomeIndex] = useState(0);
-  const [data, setData] = useState(mockData);
+  const [data, setData] = useState(doc === "hair" ? hairData : pizzaData);
 
   if (!cookies.finWrapped) {
     return <Redirect to="/" />;
@@ -48,7 +50,7 @@ function Home() {
       <Page.Header></Page.Header>
       <Page.Content>
         <Grid.Container gap={2} justify="center">
-          <Grid xs={24}>
+          <Grid xs={20}>
             <h1>Monthly Report</h1>
           </Grid>
           <Grid xs={12}>
@@ -72,11 +74,7 @@ function Home() {
                 <h3>Financial Score</h3>
               </Card.Content>
               <Card.Footer>
-                <Link
-                  block
-                  target="_blank"
-                  href="https://github.com/geist-org/react"
-                >
+                <Link block href="/home/#financial-note">
                   View calculation
                 </Link>
               </Card.Footer>
@@ -103,11 +101,7 @@ function Home() {
                 <h3>Robustness Score</h3>
               </Card.Content>
               <Card.Footer>
-                <Link
-                  block
-                  target="_blank"
-                  href="https://github.com/geist-org/react"
-                >
+                <Link block href="/home/#robustness-note">
                   View calculation
                 </Link>
               </Card.Footer>
@@ -144,12 +138,8 @@ function Home() {
                 <h3>Expenditure</h3>
               </Card.Content>
               <Card.Footer>
-                <Link
-                  block
-                  target="_blank"
-                  href="https://github.com/geist-org/react"
-                >
-                  View calculation
+                <Link block href="/home/#prediction-analysis">
+                  View more
                 </Link>
               </Card.Footer>
             </Card>
@@ -162,12 +152,11 @@ function Home() {
                     activeIndex={incomeIndex}
                     activeShape={renderActiveShape}
                     dataKey="value"
-                    startAngle={180}
-                    endAngle={0}
+                    innerRadius={100}
+                    outerRadius={120}
                     data={data["income data"]}
                     cx={220}
                     cy={200}
-                    outerRadius={100}
                     fill="#ffa500"
                     onMouseMove={({ name }) =>
                       setIncomeIndex(
@@ -186,12 +175,8 @@ function Home() {
                 <h3>Income Simplified</h3>
               </Card.Content>
               <Card.Footer>
-                <Link
-                  block
-                  target="_blank"
-                  href="https://github.com/geist-org/react"
-                >
-                  View calculation
+                <Link block href="/home/#prediction-analysis">
+                  View more
                 </Link>
               </Card.Footer>
             </Card>

@@ -88,7 +88,7 @@ function Expenditure({ data }) {
         />
       </AreaChart>
       <Spacer y={3} />
-      <h3>Expenses</h3>
+      <h3>Transactions</h3>
       <Spacer />
       <Table data={originalData.slice(page, page + 5)}>
         <Table.Column prop="Category" label="Category" />

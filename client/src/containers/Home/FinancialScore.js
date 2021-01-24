@@ -24,12 +24,10 @@ import FinanceTips from "./FinanceTips";
 function FinancialScore({ data }) {
   const categories = getCategories(data["finance per category"]);
   const [category, setCategory] = useState(categories[0]);
-  const [page, setPage] = useState(1);
   const financePerCategory = getProjectionsBy(data["finance per category"]);
   const financialScore = data["projections"][0][`1`].filter(
     (ele) => ele.name === "Financial Health"
   )[0].value;
-  const originalData = data["original data"];
   console.log(financePerCategory);
 
   const gradientOffset = () => {
@@ -67,50 +65,14 @@ function FinancialScore({ data }) {
           %
         </h1>
       </h2>
-      You seem to be doing good, but you can still improve!
       <Spacer y={2} />
-      <Select
-        placeholder="Choose category"
-        onChange={setCategory}
-        initialValue={category}
-      >
-        {categories.map((category) => (
-          <Select.Option value={category}>{category}</Select.Option>
-        ))}
-      </Select>
-      <Spacer y={2} />
-      <AreaChart
-        width={1000}
-        height={400}
-        data={financePerCategory[category]}
-        margin={{
-          top: 10,
-          right: 30,
-          left: 0,
-          bottom: 0,
-        }}
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="date" />
-        <YAxis />
-        <Tooltip />
-        <defs>
-          <linearGradient id="splitColor" x1="0" y1="0" x2="0" y2="1">
-            <stop offset={off} stopColor="green" stopOpacity={1} />
-            <stop offset={off} stopColor="red" stopOpacity={1} />
-          </linearGradient>
-        </defs>
-        <Area
-          type="monotone"
-          dataKey="amount"
-          stroke="#000"
-          fill="url(#splitColor)"
-        />
-      </AreaChart>
-      <Spacer y={3} />
       <FinanceTips />
       <Spacer y={3} />
-      <Note label="HOW IS IT CALCULATED?">
+      <Note
+        label="HOW IS financial health CALCULATED?"
+        className="financial-note"
+        id={"financial-note"}
+      >
         <Spacer />
         The Financial Score scales directly with excess growth in incomes when
         compared with growth in expenses. This means that even if your bank
@@ -124,6 +86,26 @@ function FinancialScore({ data }) {
         <InlineMath>{"r_e"}</InlineMath> is the growth rate of expenses.
         <Spacer />
         <BlockMath>{`100\\cdot \\frac{1}{1 + e^{-1.5\\cdot(r_i - r_e)}}`}</BlockMath>
+      </Note>
+      <Spacer y={1} />
+      <Note
+        label="HOW IS robustness CALCULATED?"
+        className="robustness-note"
+        id={"robustness-note"}
+      >
+        <Spacer />
+        The Financial Score scales directly with excess growth in incomes when
+        compared with growth in expenses. This means that even if your bank
+        account doesn’t look great, you can be financially healthy in the long
+        run as long as your incomes are growing faster than your expenses. To
+        improve your score, try to develop a trend of growing incomes and
+        regularly cutting costs.
+        <Spacer />
+        Here’s the formula, <InlineMath>{"m"}</InlineMath> is your survivability{" "}
+        , which measures how many times over your account could cover last
+        month’s expenses.
+        <Spacer />
+        <BlockMath>{`100(1 - e^{-m/5})`}</BlockMath>
       </Note>
     </Card>
   );

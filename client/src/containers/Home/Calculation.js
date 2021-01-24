@@ -12,7 +12,7 @@ import Expenditure from "./Expenditure";
 
 function Calculation({ data }) {
   return (
-    <Card>
+    <Card id="prediction-analysis">
       <Tabs initialValue="0">
         <Tabs.Item
           label={
