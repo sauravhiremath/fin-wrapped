@@ -21,16 +21,12 @@ import {
 import { getColorForPercentage } from "../../helpers";
 import FinanceTips from "./FinanceTips";
 
-function FinancialScore({ data }) {
+function Hypothetical({ data }) {
   const categories = getCategories(data["finance per category"]);
   const [category, setCategory] = useState(categories[0]);
   const [page, setPage] = useState(1);
   const financePerCategory = getProjectionsBy(data["finance per category"]);
-  const financialScore = data["projections"][0][`1`].filter(
-    (ele) => ele.name === "Financial Health"
-  )[0].value;
   const originalData = data["original data"];
-  console.log(financePerCategory);
 
   const gradientOffset = () => {
     const data = financePerCategory[category];
@@ -51,23 +47,7 @@ function FinancialScore({ data }) {
 
   return (
     <Card type="lite">
-      <h2>
-        Financial Health
-        <h1
-          style={{
-            color: getColorForPercentage(financialScore / 100),
-          }}
-        >
-          <NumberEasing
-            value={financialScore}
-            speed={3000}
-            decimals={1}
-            ease="cubicOut"
-          />
-          %
-        </h1>
-      </h2>
-      You seem to be doing good, but you can still improve!
+      <h2>Expense & Income Analysis</h2>
       <Spacer y={2} />
       <Select
         placeholder="Choose category"
@@ -108,23 +88,21 @@ function FinancialScore({ data }) {
         />
       </AreaChart>
       <Spacer y={3} />
-      <FinanceTips />
+      <h3>Expenses</h3>
+      <Spacer />
+      <Table data={originalData.slice(page, page + 5)}>
+        <Table.Column prop="Category" label="Category" />
+        <Table.Column prop="Amount" label="Amount" />
+        <Table.Column prop="Date" label="Date" />
+      </Table>
+      <Spacer />
+      <Pagination
+        count={parseInt(originalData.length / 5)}
+        initialPage={page}
+        limit={5}
+        onChange={(v) => setPage(v)}
+      />
       <Spacer y={3} />
-      <Note label="HOW IS IT CALCULATED?">
-        <Spacer />
-        The Financial Score scales directly with excess growth in incomes when
-        compared with growth in expenses. This means that even if your bank
-        account doesn’t look great, you can be financially healthy in the long
-        run as long as your incomes are growing faster than your expenses. To
-        improve your score, try to develop a trend of growing incomes and
-        regularly cutting costs.
-        <Spacer />
-        Here’s the formula. When you’re reading it,{" "}
-        <InlineMath>{"r_i"}</InlineMath> is the growth rate of incomes and{" "}
-        <InlineMath>{"r_e"}</InlineMath> is the growth rate of expenses.
-        <Spacer />
-        <BlockMath>{`100\\cdot \\frac{1}{1 + e^{-1.5\\cdot(r_i - r_e)}}`}</BlockMath>
-      </Note>
     </Card>
   );
 }
@@ -153,4 +131,4 @@ const getCategories = (projections) => {
   return result;
 };
 
-export default FinancialScore;
+export default Hypothetical;

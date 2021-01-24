@@ -8,6 +8,7 @@ import {
 import { Tabs, Card } from "@geist-ui/react";
 import FinancialScore from "./FinancialScore";
 import RobustnessScore from "./RobustnessScore";
+import Expenditure from "./Expenditure";
 
 function Calculation({ data }) {
   return (
@@ -16,42 +17,23 @@ function Calculation({ data }) {
         <Tabs.Item
           label={
             <>
-              <FastForward /> Financial Score
+              <FastForward /> Projections
             </>
           }
           value="0"
         >
+          <RobustnessScore data={data} />
           <FinancialScore data={data} />
         </Tabs.Item>
         <Tabs.Item
           label={
             <>
-              <Anchor /> Robustness Score
-            </>
-          }
-          value="1"
-        >
-          <RobustnessScore data={data} />
-        </Tabs.Item>
-        <Tabs.Item
-          label={
-            <>
-              <Code /> Expenditure
+              <Code /> Expenditure and Income
             </>
           }
           value="2"
         >
-          The Evil Rabbit Jumped over the Fence.
-        </Tabs.Item>
-        <Tabs.Item
-          label={
-            <>
-              <CheckInCircle /> Income
-            </>
-          }
-          value="3"
-        >
-          The Fence Jumped over The Evil Rabbit.
+          <Expenditure data={data} />
         </Tabs.Item>
       </Tabs>
     </Card>

@@ -12,6 +12,8 @@
     "react-cookie": "^4.0.3",
     "react-dom": "^17.0.1",
     "react-dropzone": "^11.2.4",
+    "react-katex": "^2.0.2",
+    "react-latex": "^2.0.0",
     "react-number-easing": "^1.0.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
