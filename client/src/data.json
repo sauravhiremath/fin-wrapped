@@ -62888,92 +62888,104 @@
   ],
   "financial health": 51.5,
   "robustness score": 49.2,
-  "projections": {
-    "0": {
-      "Sales": 26272.76955331246,
-      "Tips": 3883.8878870104218,
-      "Food and Beverage Cost": -7447.786195419239,
-      "Marketing": -1571.0396092756941,
-      "Labor & Benefits Cost": -6897.9922943162255,
-      "Rent and Utilities": -1735.5758149089431,
-      "Total Income": 30156.65744032288,
-      "Total Expenses": -17652.393913920103,
-      "Net Income": 12504.263526402778,
-      "Bank Value": 17504.263526402778,
-      "Robustness Score": 17.989401438765828,
-      "Financial Health": 12.240248389940682
+  "projections": [
+    {
+      "0": [
+        { "name": "Sales", "value": 26272.76955331246 },
+        { "name": "Tips", "value": 3883.8878870104218 },
+        { "name": "Food and Beverage Cost", "value": -7447.786195419239 },
+        { "name": "Marketing", "value": -1571.0396092756941 },
+        { "name": "Labor & Benefits Cost", "value": -6897.9922943162255 },
+        { "name": "Rent and Utilities", "value": -1735.5758149089431 },
+        { "name": "Total Income", "value": 30156.65744032288 },
+        { "name": "Total Expenses", "value": -17652.393913920103 },
+        { "name": "Net Income", "value": 12504.263526402778 },
+        { "name": "Bank Value", "value": 17504.263526402778 },
+        { "name": "Robustness Score", "value": 17.989401438765828 },
+        { "name": "Financial Health", "value": 12.240248389940682 }
+      ]
     },
-    "1": {
-      "Sales": 27872.786962093534,
-      "Tips": 4140.846204952484,
-      "Food and Beverage Cost": -9909.85459572863,
-      "Marketing": -1904.9337052745882,
-      "Labor & Benefits Cost": -5567.043208891632,
-      "Rent and Utilities": -563.3188105535603,
-      "Total Income": 32013.63316704602,
-      "Total Expenses": -17945.15032044841,
-      "Net Income": 14068.48284659761,
-      "Bank Value": 31572.746373000387,
-      "Robustness Score": 29.663586266832663,
-      "Financial Health": 37.931226438147256
+    {
+      "1": [
+        { "name": "Sales", "value": 27872.786962093534 },
+        { "name": "Tips", "value": 4140.846204952484 },
+        { "name": "Food and Beverage Cost", "value": -9909.85459572863 },
+        { "name": "Marketing", "value": -1904.9337052745882 },
+        { "name": "Labor & Benefits Cost", "value": -5567.043208891632 },
+        { "name": "Rent and Utilities", "value": -563.3188105535603 },
+        { "name": "Total Income", "value": 32013.63316704602 },
+        { "name": "Total Expenses", "value": -17945.15032044841 },
+        { "name": "Net Income", "value": 14068.48284659761 },
+        { "name": "Bank Value", "value": 31572.746373000387 },
+        { "name": "Robustness Score", "value": 29.663586266832663 },
+        { "name": "Financial Health", "value": 37.931226438147256 }
+      ]
     },
-    "2": {
-      "Sales": 29570.24578081838,
-      "Tips": 4414.804904749142,
-      "Food and Beverage Cost": -13185.826704972407,
-      "Marketing": -2309.7905361941616,
-      "Labor & Benefits Cost": -4492.897174617469,
-      "Rent and Utilities": -182.8373497703565,
-      "Total Income": 33985.05068556752,
-      "Total Expenses": -20171.351765554395,
-      "Net Income": 13813.698920013125,
-      "Bank Value": 45386.445293013516,
-      "Robustness Score": 36.23775624109753,
-      "Financial Health": 46.925954963765356
+    {
+      "2": [
+        { "name": "Sales", "value": 29570.24578081838 },
+        { "name": "Tips", "value": 4414.804904749142 },
+        { "name": "Food and Beverage Cost", "value": -13185.826704972407 },
+        { "name": "Marketing", "value": -2309.7905361941616 },
+        { "name": "Labor & Benefits Cost", "value": -4492.897174617469 },
+        { "name": "Rent and Utilities", "value": -182.8373497703565 },
+        { "name": "Total Income", "value": 33985.05068556752 },
+        { "name": "Total Expenses", "value": -20171.351765554395 },
+        { "name": "Net Income", "value": 13813.698920013125 },
+        { "name": "Bank Value", "value": 45386.445293013516 },
+        { "name": "Robustness Score", "value": 36.23775624109753 },
+        { "name": "Financial Health", "value": 46.925954963765356 }
+      ]
     },
-    "3": {
-      "Sales": 31371.08021265236,
-      "Tips": 4706.888732956633,
-      "Food and Beverage Cost": -17544.76054255162,
-      "Marketing": -2800.691859417268,
-      "Labor & Benefits Cost": -3626.0047325381875,
-      "Rent and Utilities": -59.34383131675879,
-      "Total Income": 36077.96894560899,
-      "Total Expenses": -24030.80096582383,
-      "Net Income": 12047.167979785161,
-      "Bank Value": 57433.61327279868,
-      "Robustness Score": 37.997779767448414,
-      "Financial Health": 49.23057898472376
+    {
+      "3": [
+        { "name": "Sales", "value": 31371.08021265236 },
+        { "name": "Tips", "value": 4706.888732956633 },
+        { "name": "Food and Beverage Cost", "value": -17544.76054255162 },
+        { "name": "Marketing", "value": -2800.691859417268 },
+        { "name": "Labor & Benefits Cost", "value": -3626.0047325381875 },
+        { "name": "Rent and Utilities", "value": -59.34383131675879 },
+        { "name": "Total Income", "value": 36077.96894560899 },
+        { "name": "Total Expenses", "value": -24030.80096582383 },
+        { "name": "Net Income", "value": 12047.167979785161 },
+        { "name": "Bank Value", "value": 57433.61327279868 },
+        { "name": "Robustness Score", "value": 37.997779767448414 },
+        { "name": "Financial Health", "value": 49.23057898472376 }
+      ]
     },
-    "4": {
-      "Sales": 33281.585855030775,
-      "Tips": 5018.296849448884,
-      "Food and Beverage Cost": -23344.658577940892,
-      "Marketing": -3395.92476828245,
-      "Labor & Benefits Cost": -2926.376858715615,
-      "Rent and Utilities": -19.261328824636543,
-      "Total Income": 38299.882704479656,
-      "Total Expenses": -29686.221533763593,
-      "Net Income": 8613.661170716063,
-      "Bank Value": 66047.27444351473,
-      "Robustness Score": 35.91560001307501,
-      "Financial Health": 49.807630509878855
+    {
+      "4": [
+        { "name": "Sales", "value": 33281.585855030775 },
+        { "name": "Tips", "value": 5018.296849448884 },
+        { "name": "Food and Beverage Cost", "value": -23344.658577940892 },
+        { "name": "Marketing", "value": -3395.92476828245 },
+        { "name": "Labor & Benefits Cost", "value": -2926.376858715615 },
+        { "name": "Rent and Utilities", "value": -19.261328824636543 },
+        { "name": "Total Income", "value": 38299.882704479656 },
+        { "name": "Total Expenses", "value": -29686.221533763593 },
+        { "name": "Net Income", "value": 8613.661170716063 },
+        { "name": "Bank Value", "value": 66047.27444351473 },
+        { "name": "Robustness Score", "value": 35.91560001307501 },
+        { "name": "Financial Health", "value": 49.807630509878855 }
+      ]
     },
-    "5": {
-      "Sales": 35308.44170864889,
-      "Tips": 5350.307750608266,
-      "Food and Beverage Cost": -31061.870739067446,
-      "Marketing": -4117.66292427247,
-      "Labor & Benefits Cost": -2361.740303971344,
-      "Rent and Utilities": -6.251682438744124,
-      "Total Income": 40658.74945925716,
-      "Total Expenses": -37547.52564975,
-      "Net Income": 3111.223809507159,
-      "Bank Value": 69158.4982530219,
-      "Robustness Score": 30.814470695767216,
-      "Financial Health": 49.951907405012804
+    {
+      "5": [
+        { "name": "Sales", "value": 35308.44170864889 },
+        { "name": "Tips", "value": 5350.307750608266 },
+        { "name": "Food and Beverage Cost", "value": -31061.870739067446 },
+        { "name": "Marketing", "value": -4117.66292427247 },
+        { "name": "Labor & Benefits Cost", "value": -2361.740303971344 },
+        { "name": "Rent and Utilities", "value": -6.251682438744124 },
+        { "name": "Total Income", "value": 40658.74945925716 },
+        { "name": "Total Expenses", "value": -37547.52564975 },
+        { "name": "Net Income", "value": 3111.223809507159 },
+        { "name": "Bank Value", "value": 69158.4982530219 },
+        { "name": "Robustness Score", "value": 30.814470695767216 },
+        { "name": "Financial Health", "value": 49.951907405012804 }
+      ]
     }
-  },
+  ],
   "income data": [
     { "name": "Sales", "value": 271674.74 },
     { "name": "Tips", "value": 41541.87 }
