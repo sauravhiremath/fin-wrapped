@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from flask_cors import CORS, cross_origin
 from cassandra.cluster import Cluster
 from cassandra.auth import PlainTextAuthProvider
@@ -40,7 +40,7 @@ def generate_data():
 
 @app.route('/api/process', methods=['GET', 'POST'])
 @cross_origin(supports_credentials=True)
-def process_data(data):
+def process_data():
     """
     read, store, calculate
     """
@@ -58,7 +58,7 @@ def process_data(data):
                                 """)
 
     doc_id = session.execute("SELECT MAX(doc_id) FROM transactions.transaction_data")[0].system_max_doc_id + 1
-    with open(data) as csv_file:
+    with open(request.files['file']) as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         next(csv_reader) #skip header
         for row in csv_reader:
