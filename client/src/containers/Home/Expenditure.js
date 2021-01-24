@@ -1,7 +1,7 @@
 import "./Home.css";
 import "katex/dist/katex.min.css";
 import { InlineMath, BlockMath } from "react-katex";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FastForward,
   Anchor,
@@ -23,27 +23,33 @@ import FinanceTips from "./FinanceTips";
 
 function Expenditure({ data }) {
   const categories = getCategories(data["finance per category"]);
-  const [category, setCategory] = useState(categories[0]);
   const [page, setPage] = useState(1);
-  const financePerCategory = getProjectionsBy(data["finance per category"]);
+  const [category, setCategory] = useState(categories[0]);
   const originalData = data["original data"];
+  const financePerCategory = getProjectionsBy(data["finance per category"]);
 
   const gradientOffset = () => {
     const data = financePerCategory[category];
-    const dataMax = Math.max(...data.map((i) => i.amount));
-    const dataMin = Math.min(...data.map((i) => i.amount));
+    if (data) {
+      const dataMax = Math.max(...data.map((i) => i.value));
+      const dataMin = Math.min(...data.map((i) => i.value));
 
-    if (dataMax <= 0) {
-      return 0;
-    }
-    if (dataMin >= 0) {
-      return 1;
-    }
+      if (dataMax <= 0) {
+        return 0;
+      }
+      if (dataMin >= 0) {
+        return 1;
+      }
 
-    return dataMax / (dataMax - dataMin);
+      return dataMax / (dataMax - dataMin);
+    }
   };
 
   const off = gradientOffset();
+
+  if (!financePerCategory || !categories) {
+    return null;
+  }
 
   return (
     <Card type="lite">
@@ -54,39 +60,46 @@ function Expenditure({ data }) {
         onChange={setCategory}
         initialValue={category}
       >
-        {categories.map((category) => (
-          <Select.Option value={category}>{category}</Select.Option>
-        ))}
+        {categories &&
+          categories.map((category) => (
+            <Select.Option
+              value={typeof category === "string" ? category : null}
+            >
+              {category}
+            </Select.Option>
+          ))}
       </Select>
       <Spacer y={2} />
-      <AreaChart
-        width={1000}
-        height={400}
-        data={financePerCategory[category]}
-        margin={{
-          top: 10,
-          right: 30,
-          left: 0,
-          bottom: 0,
-        }}
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="date" />
-        <YAxis />
-        <Tooltip />
-        <defs>
-          <linearGradient id="splitColor" x1="0" y1="0" x2="0" y2="1">
-            <stop offset={off} stopColor="green" stopOpacity={1} />
-            <stop offset={off} stopColor="red" stopOpacity={1} />
-          </linearGradient>
-        </defs>
-        <Area
-          type="monotone"
-          dataKey="amount"
-          stroke="#000"
-          fill="url(#splitColor)"
-        />
-      </AreaChart>
+      {financePerCategory && (
+        <AreaChart
+          width={1000}
+          height={400}
+          data={financePerCategory[category]}
+          margin={{
+            top: 10,
+            right: 30,
+            left: 0,
+            bottom: 0,
+          }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="date" />
+          <YAxis />
+          <Tooltip />
+          <defs>
+            <linearGradient id="splitColor" x1="0" y1="0" x2="0" y2="1">
+              <stop offset={off} stopColor="green" stopOpacity={1} />
+              <stop offset={off} stopColor="red" stopOpacity={1} />
+            </linearGradient>
+          </defs>
+          <Area
+            type="monotone"
+            dataKey="amount"
+            stroke="#000"
+            fill="url(#splitColor)"
+          />
+        </AreaChart>
+      )}
       <Spacer y={3} />
       <h3>Transactions</h3>
       <Spacer />

@@ -38,11 +38,19 @@ import { getColorForPercentage } from "../../helpers";
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
 function Home() {
-  const doc = "pizza";
+  const [doc, setDoc] = useState("pizza");
   const [cookies] = useCookies(["finWrapped"]);
   const [pieIndex, setPieIndex] = useState(0);
   const [incomeIndex, setIncomeIndex] = useState(0);
   const [data, setData] = useState(doc === "hair" ? hairData : pizzaData);
+
+  useEffect(() => {
+    setData(() => {
+      if (doc === "hair") {
+        return hairData;
+      } else return pizzaData;
+    });
+  }, [doc]);
 
   if (!cookies.finWrapped) {
     return <Redirect to="/" />;
@@ -71,8 +79,24 @@ function Home() {
       <Page.Header></Page.Header>
       <Page.Content id="home-print">
         <Grid.Container gap={2} justify="center" alignItems="center">
-          <Grid xs={19}>
+          <Grid xs={14}>
             <h1>Monthly Report</h1>
+          </Grid>
+          <Grid xs={5}>
+            <Button
+              icon={<RefreshCw />}
+              shadow
+              type="success"
+              onClick={() =>
+                setDoc((v) => {
+                  if (v === "hair") {
+                    return "pizza";
+                  } else return "hair";
+                })
+              }
+            >
+              Switch Scenarios
+            </Button>
           </Grid>
           <Grid xs={5}>
             <Button
