@@ -3,7 +3,7 @@ from flask_cors import CORS, cross_origin
 from cassandra.cluster import Cluster
 from cassandra.auth import PlainTextAuthProvider
 from dotenv import load_dotenv
-from algos import compute_fin_health, compute_robustness, compute_projections
+from algos import compute_fin_health, compute_robustness, compute_projections, prepare_df
 from io import StringIO
 import pandas as pd
 import csv
@@ -82,6 +82,15 @@ def process_data():
             projection_dict[index].append({'name': name, 'value': round(value, 2)})
         projections.append(projection_dict)
 
+    finance_per_category = prepare_df(df)
+    finance_per_categories = []
+    for index, row in finance_per_category.iterrows():
+        finance_dict = {}
+        finance_dict[str(index)] = []
+        for name, value in row.items():
+            finance_dict[str(index)].append({'name': name, 'value': round(value, 2)})
+        finance_per_categories.append(finance_dict)
+    
     df_income = df.loc[df['Amount'] >= 0]
     df_expense = df.loc[df['Amount'] < 0]
 
@@ -102,6 +111,7 @@ def process_data():
     response["projections"] = projections
     response["income data"] = income_data
     response["expense data"] = expense_data
+    response["finance per category"] = finance_per_categories
 
     res = jsonify(**response)
     res.headers.add("Access-Control-Allow-Origin", "*")
