@@ -7,6 +7,7 @@ import {
 } from "@geist-ui/react-icons";
 import { Tabs, Card } from "@geist-ui/react";
 import FinancialScore from "./FinancialScore";
+import RobustnessScore from "./RobustnessScore";
 
 function Calculation({ data }) {
   return (
@@ -30,7 +31,7 @@ function Calculation({ data }) {
           }
           value="1"
         >
-          The Fence Jumped over The Evil Rabbit.
+          <RobustnessScore data={data} />
         </Tabs.Item>
         <Tabs.Item
           label={
