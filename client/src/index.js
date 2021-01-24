@@ -8,7 +8,7 @@ import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
   <React.StrictMode>
-    <GeistProvider>
+    <GeistProvider theme={{ type: 'light' }}>
       <CssBaseline />
       <App />
     </GeistProvider>

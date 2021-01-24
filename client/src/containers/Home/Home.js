@@ -28,62 +28,20 @@ import {
 import NumberEasing from "react-number-easing";
 import { useState } from "react";
 import Calculation from "./Calculation";
+import mockData from "../../data.json";
+import { getColorForPercentage } from "../../helpers";
+
+const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
 function Home() {
   const [cookies] = useCookies(["finWrapped"]);
   const [pieIndex, setPieIndex] = useState(0);
+  const [incomeIndex, setIncomeIndex] = useState(0);
+  const [data, setData] = useState(mockData);
 
   if (!cookies.finWrapped) {
     return <Redirect to="/" />;
   }
-
-  const data = [
-    { name: "Group A", value: 400 },
-    { name: "Group B", value: 300 },
-    { name: "Group C", value: 300 },
-    { name: "Group D", value: 200 },
-  ];
-
-  const radarData = [
-    {
-      income: "Active source",
-      A: 120,
-      B: 110,
-      fullMark: 150,
-    },
-    {
-      income: "Bonuses",
-      A: 98,
-      B: 130,
-      fullMark: 150,
-    },
-    {
-      income: "Stocks",
-      A: 86,
-      B: 130,
-      fullMark: 150,
-    },
-    {
-      income: "Side money",
-      A: 99,
-      B: 100,
-      fullMark: 150,
-    },
-    {
-      income: "Gifts",
-      A: 85,
-      B: 90,
-      fullMark: 150,
-    },
-    {
-      income: "Others",
-      A: 65,
-      B: 85,
-      fullMark: 150,
-    },
-  ];
-
-  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
   return (
     <Page size="large" dotBackdrop>
@@ -96,11 +54,17 @@ function Home() {
           <Grid xs={12}>
             <Card shadow>
               <Card.Content>
-                <h1 style={{ color: getColorForPercentage(0.9) }}>
+                <h1
+                  style={{
+                    color: getColorForPercentage(
+                      data["financial health"] / 100
+                    ),
+                  }}
+                >
                   <NumberEasing
-                    value={90}
+                    value={data["financial health"]}
                     speed={3000}
-                    decimals={0}
+                    decimals={1}
                     ease="cubicOut"
                   />
                   %
@@ -121,11 +85,17 @@ function Home() {
           <Grid xs={12}>
             <Card shadow>
               <Card.Content>
-                <h1 style={{ color: getColorForPercentage(0.3) }}>
+                <h1
+                  style={{
+                    color: getColorForPercentage(
+                      data["robustness score"] / 100
+                    ),
+                  }}
+                >
                   <NumberEasing
-                    value={30}
+                    value={data["robustness score"]}
                     speed={3000}
-                    decimals={0}
+                    decimals={1}
                     ease="cubicOut"
                   />
                   %
@@ -146,22 +116,24 @@ function Home() {
           <Grid xs={12}>
             <Card shadow>
               <Card.Content style={{ justifyContent: "center" }}>
-                <PieChart width={400} height={400}>
+                <PieChart width={500} height={400}>
                   <Pie
                     activeIndex={pieIndex}
                     activeShape={renderActiveShape}
-                    data={data}
-                    cx={200}
+                    data={data["expense data"]}
+                    cx={250}
                     cy={200}
-                    innerRadius={90}
-                    outerRadius={100}
+                    innerRadius={100}
+                    outerRadius={120}
                     fill="#ffa500"
                     dataKey="value"
                     onMouseMove={({ name }) =>
-                      setPieIndex(data.findIndex((x) => x.name === name))
+                      setPieIndex(
+                        data["expense data"].findIndex((x) => x.name === name)
+                      )
                     }
                   >
-                    {data.map((entry, index) => (
+                    {data["expense data"].map((entry, index) => (
                       <Cell
                         key={`cell-${index}`}
                         fill={COLORS[index % COLORS.length]}
@@ -185,26 +157,33 @@ function Home() {
           <Grid xs={12}>
             <Card shadow>
               <Card.Content>
-                <RadarChart
-                  cx={200}
-                  cy={200}
-                  outerRadius={100}
-                  width={400}
-                  height={400}
-                  data={radarData}
-                >
-                  <PolarGrid />
-                  <PolarAngleAxis dataKey="income" />
-                  <PolarRadiusAxis />
-                  <Radar
-                    name="Saurav"
-                    dataKey="A"
-                    stroke="#ffa500"
+                <PieChart width={500} height={400}>
+                  <Pie
+                    activeIndex={incomeIndex}
+                    activeShape={renderActiveShape}
+                    dataKey="value"
+                    startAngle={180}
+                    endAngle={0}
+                    data={data["income data"]}
+                    cx={220}
+                    cy={200}
+                    outerRadius={100}
                     fill="#ffa500"
-                    fillOpacity={0.6}
-                  />
-                </RadarChart>
-                <h3>Income Radar</h3>
+                    onMouseMove={({ name }) =>
+                      setIncomeIndex(
+                        data["income data"].findIndex((x) => x.name === name)
+                      )
+                    }
+                  >
+                    {data["income data"].map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={COLORS[index % COLORS.length]}
+                      />
+                    ))}
+                  </Pie>
+                </PieChart>
+                <h3>Income Simplified</h3>
               </Card.Content>
               <Card.Footer>
                 <Link
@@ -222,7 +201,7 @@ function Home() {
             <h1>Prediction + Analysis</h1>
           </Grid>
           <Grid xs={24}>
-            <Calculation />
+            <Calculation data={data} />
           </Grid>
         </Grid.Container>
       </Page.Content>
@@ -289,7 +268,7 @@ const renderActiveShape = (props) => {
         y={ey}
         textAnchor={textAnchor}
         fill="#333"
-      >{`PV ${value}`}</text>
+      >{`$${value}`}</text>
       <text
         x={ex + (cos >= 0 ? 1 : -1) * 12}
         y={ey}
@@ -297,37 +276,10 @@ const renderActiveShape = (props) => {
         textAnchor={textAnchor}
         fill="#999"
       >
-        {`(Rate ${(percent * 100).toFixed(2)}%)`}
+        {`(Share ${(percent * 100).toFixed(2)}%)`}
       </text>
     </g>
   );
-};
-
-var percentColors = [
-  { pct: 0.0, color: { r: 0xff, g: 0x00, b: 0 } },
-  { pct: 0.5, color: { r: 0xff, g: 0xff, b: 0 } },
-  { pct: 1.0, color: { r: 0x00, g: 0xff, b: 0 } },
-];
-
-var getColorForPercentage = function (pct) {
-  for (var i = 1; i < percentColors.length - 1; i++) {
-    if (pct < percentColors[i].pct) {
-      break;
-    }
-  }
-  var lower = percentColors[i - 1];
-  var upper = percentColors[i];
-  var range = upper.pct - lower.pct;
-  var rangePct = (pct - lower.pct) / range;
-  var pctLower = 1 - rangePct;
-  var pctUpper = rangePct;
-  var color = {
-    r: Math.floor(lower.color.r * pctLower + upper.color.r * pctUpper),
-    g: Math.floor(lower.color.g * pctLower + upper.color.g * pctUpper),
-    b: Math.floor(lower.color.b * pctLower + upper.color.b * pctUpper),
-  };
-  return "rgb(" + [color.r, color.g, color.b].join(",") + ")";
-  // or output as hex if preferred
 };
 
 export default Home;
