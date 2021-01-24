@@ -1,4 +1,6 @@
 import "./Home.css";
+import "katex/dist/katex.min.css";
+import { InlineMath, BlockMath } from "react-katex";
 import {
   FastForward,
   Anchor,
@@ -21,13 +23,13 @@ import { useState } from "react";
 import FinanceTips from "./FinanceTips";
 
 function RobustnessScore({ data }) {
-  const robustnessScore = data["robustness score"];
-  const projectionsData = data["projections"];
-  const originalData = data["original data"];
   const [month, setMonth] = useState(0);
+  const projectionsData = data["projections"];
+  const robustnessScore = projectionsData[month][`${month + 1}`].filter(
+    (ele) => ele.name === "Robustness Score"
+  )[0].value;
 
   const gradientOffset = () => {
-    console.log(projectionsData[month][`${month + 1}`]);
     const data = projectionsData[month][`${month + 1}`].slice(0, -2);
     const dataMax = Math.max(...data.map((i) => i.value));
     const dataMin = Math.min(...data.map((i) => i.value));
@@ -46,19 +48,22 @@ function RobustnessScore({ data }) {
 
   return (
     <Card type="lite">
-      <h1
-        style={{
-          color: getColorForPercentage(robustnessScore / 100),
-        }}
-      >
-        <NumberEasing
-          value={robustnessScore}
-          speed={3000}
-          decimals={1}
-          ease="cubicOut"
-        />
-        %
-      </h1>
+      <h2>
+        Robustness Score
+        <h1
+          style={{
+            color: getColorForPercentage(robustnessScore / 100),
+          }}
+        >
+          <NumberEasing
+            value={robustnessScore}
+            speed={3000}
+            decimals={1}
+            ease="cubicOut"
+          />
+          %
+        </h1>
+      </h2>
       There is quite some scope for improvement. See statistics below!
       <Spacer y={2} />
       <h3>
@@ -109,8 +114,34 @@ function RobustnessScore({ data }) {
       <Spacer />
       <Spacer y={3} />
       <FinanceTips />
+      <Spacer y={3} />
+      <Note label="HOW IS IT CALCULATED?">
+        <Spacer />
+        The Financial Score scales directly with excess growth in incomes when
+        compared with growth in expenses. This means that even if your bank
+        account doesn’t look great, you can be financially healthy in the long
+        run as long as your incomes are growing faster than your expenses. To
+        improve your score, try to develop a trend of growing incomes and
+        regularly cutting costs.
+        <Spacer />
+        Here’s the formula, <InlineMath>{"m"}</InlineMath> is your survivability{" "}
+        , which measures how many times over your account could cover last
+        month’s expenses.
+        <Spacer />
+        <BlockMath>{`100(1 - e^{-m/5})`}</BlockMath>
+      </Note>
     </Card>
   );
 }
+
+const getCategories = (projections) => {
+  const result = [];
+  projections.forEach((item) => {
+    const category = Object.keys(item)[0];
+    result.push(category);
+  });
+
+  return result;
+};
 
 export default RobustnessScore;

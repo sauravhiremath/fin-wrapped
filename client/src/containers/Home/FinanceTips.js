@@ -26,68 +26,46 @@ function FinanceTips() {
       </Text>
       <Spacer />
       <Collapse.Group>
-        <Collapse title="Make Corrections to Your Credit Report">
+        <Collapse title="Track Trends in your Cash Flows">
           <Text>
             The first step that you should take is to analyze the information
-            that is being reported by all three of the major consumer credit
-            reporting agencies, Experian, Equifax, and TransUnion. You can get a
-            free copy of your credit report through{" "}
-            <Link
-              href="https://www.annualcreditreport.com/index.action"
-              icon
-              color
-            >
-              AnnualCreditReport.com.
-            </Link>
-            You would think the information they’re reporting about you is
-            correct, but errors are common. These errors could be partially
-            responsible for your lower credit rating. To correct errors on your
-            credit report you should contact the companies reporting bad data,
-            then dispute the items on your credit report with each credit bureau
-            that is reporting the inaccurate information.
+            that describes where your money goes and is coming from. You can get
+            a snapshot of this data by clicking through Fin-Wrapped. You would
+            think the information already exists in your bank statement, but
+            plots and visualizations help you identify hidden trends that could
+            make or break the profitability of your business. Missing these
+            trends could be responsible for huge fluctuations in cash that lead
+            to low robustness in times of crisis. To avoid this risk and
+            stabilize your financial health, use the data to inform your
+            spending decisions.
           </Text>
         </Collapse>
-        <Collapse title="Avoid Opening Too Many New Accounts">
+        <Collapse title="Avoid Growing your Expenses">
           <Text>
-            One of the factors that influence credit scores is the age of your
-            accounts. Accounts that have been established for many years are
-            viewed as more favorable than newer accounts. Avoid opening too many
-            new accounts as this can dramatically lower the overall age of your
-            open accounts. Plus, with each new application a “hard inquiry” is
-            noted on your credit report which can also bring down your credit
-            score. Let your existing accounts age naturally to see a slow
-            improvement in your credit rating over time. Only open an account or
-            two as needed and use those accounts to build up your credit by
-            continuously making your payments on time. Conversely, opening a new
-            account can have a positive impact on your credit by reducing your
-            <Link
-              href="https://www.thebalance.com/what-is-a-good-credit-utilization-ratio-960548"
-              icon
-              color
-            >
-              credit utilization ratio
-            </Link>
-            . However, you can also do this by simply asking for a credit limit
-            increase on your existing accounts rather than opening new ones.
+            One of the factors that influence financial scores is the growth
+            rate of your spending. Accounts with slower growth in outflows over
+            time are highly favored over ones that grow expenses quickly. Avoid
+            incurring expenses in a way that will dramatically increase your
+            recent growth on average. Plus, each additional expense larger than
+            what was expected by your growth rate will directly increase the
+            most recent month’s growth rate, which has a direct impact on your
+            Financial Score. Let your existing expenses grow naturally and only
+            add new expenditures when they’re paired with a comparable new
+            income. However, growth in expenses is natural, and as long your
+            incomes grow in a similar way or more you’ll remain financially
+            healthy.
           </Text>
         </Collapse>
-        <Collapse title="Reduce Your Credit Card Balances">
+        <Collapse title="Invest Cash and Drive Income">
           <Text>
-            Credit reporting agencies also analyze the balances on your credit
-            cards and other{" "}
-            <Link
-              href="https://www.lendingtree.com/glossary/revolving-debt/"
-              icon
-              color
-            >
-              revolving debt
-            </Link>
-            . If you carry balances that are close to the limit, this will
-            significantly hurt your credit score. It is best to carry as little
-            revolving debt as possible from one month to the next. If you must
-            carry a balance, make a strong effort to reduce the balances so that
-            are using less than thirty percent of your available credit at any
-            given time.
+            While having a lot of cash on hand will keep your business robust
+            during extreme or catastrophic conditions, having too much cash may
+            indicate you’re not investing enough in your business. It is best to
+            carry enough cash to keep the business afloat for at least a few
+            months and invest the rest in ways that will boost your income and
+            cut long term expenses. We recommend trying either to grow your
+            strongest income streams, or focus on boosting the categories that
+            may be lagging.
           </Text>
         </Collapse>
       </Collapse.Group>

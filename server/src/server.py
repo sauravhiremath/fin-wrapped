@@ -85,9 +85,14 @@ def process_data():
 
     finance_per_categories = []
     for category in  df['Category'].unique():
+        temp_dict = {}
         for index, row in prepare_df(df.loc[df["Category"] == category]).iterrows():
             for name, value in row.items():
-                finance_per_categories.append({'name': category, 'date': str(index), 'value': round(value, 2)})
+                if category in temp_dict:
+                    temp_dict[category].append({'date': str(index), 'value': round(value, 2)})
+                else:
+                    temp_dict[category] = [{'date': str(index), 'value': round(value, 2)}]
+        finance_per_categories.append(temp_dict)
     
     df_income = df.loc[df['Amount'] >= 0]
     df_expense = df.loc[df['Amount'] < 0]
