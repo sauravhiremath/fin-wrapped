@@ -55,7 +55,8 @@ def process_data():
                                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)
                                 """)
 
-    doc_id = session.execute("SELECT MAX(doc_id) FROM transactions.transaction_data")[0].system_max_doc_id + 1
+    current_id = session.execute("SELECT MAX(doc_id) FROM transactions.transaction_data")[0].system_max_doc_id
+    doc_id =  current_id + 1 if current_id else 0
     newFile = request.files['file'].read()
     csv_file = StringIO(newFile.decode("utf-8"))
     csv_reader = csv.reader(csv_file, delimiter=',')
