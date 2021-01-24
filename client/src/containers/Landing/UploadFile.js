@@ -5,8 +5,27 @@ import { Card } from "@geist-ui/react";
 import { Upload } from "@geist-ui/react-icons";
 
 const UploadFile = ({ handleSubmit }) => {
-  const onDrop = useCallback((acceptedFile) => {
-    handleSubmit(acceptedFile);
+  const onDrop = useCallback((acceptedFiles) => {
+    const reader = new FileReader();
+    reader.onabort = () => console.log("file reading was aborted");
+    reader.onerror = () => console.log("file reading has failed");
+    reader.onload = (ev) => {
+      ev.preventDefault();
+
+      const formData = new FormData();
+      const binaryStr = reader.result;
+      formData.append("file", binaryStr);
+      fetch("http://34.105.210.187:3001/api/process", {
+        method: "POST",
+        headers: { "Content-Type": "multipart/form-data" },
+        body: formData,
+      });
+      console.log(formData);
+    };
+
+    reader.readAsText(acceptedFiles[0]);
+    handleSubmit(acceptedFiles[0]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const { getRootProps, getInputProps } = useDropzone({

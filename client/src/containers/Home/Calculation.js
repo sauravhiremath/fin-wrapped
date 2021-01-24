@@ -1,36 +1,15 @@
 import "./Home.css";
-import { useCookies } from "react-cookie";
 import {
-  PieChart,
-  Pie,
-  Sector,
-  Cell,
-  RadarChart,
-  PolarAngleAxis,
-  PolarGrid,
-  PolarRadiusAxis,
-  Radar,
-} from "recharts";
-import { Redirect } from "react-router-dom";
-import { FastForward, Anchor, Code, CheckInCircle } from "@geist-ui/react-icons";
-import {
-  Tabs,
-  Row,
-  Breadcrumbs,
-  Spacer,
-  Text,
-  Button,
-  Page,
-  Col,
-  Card,
-  Grid,
-  Image,
-  Link,
-} from "@geist-ui/react";
-import NumberEasing from "react-number-easing";
-import { useState } from "react";
+  FastForward,
+  Anchor,
+  Code,
+  CheckInCircle,
+} from "@geist-ui/react-icons";
+import { Tabs, Card } from "@geist-ui/react";
+import FinancialScore from "./FinancialScore";
+import RobustnessScore from "./RobustnessScore";
 
-function Calculation() {
+function Calculation({ data }) {
   return (
     <Card>
       <Tabs initialValue="0">
@@ -42,7 +21,7 @@ function Calculation() {
           }
           value="0"
         >
-          The Evil Rabbit Jumped over the Fence.
+          <FinancialScore data={data} />
         </Tabs.Item>
         <Tabs.Item
           label={
@@ -52,7 +31,7 @@ function Calculation() {
           }
           value="1"
         >
-          The Fence Jumped over The Evil Rabbit.
+          <RobustnessScore data={data} />
         </Tabs.Item>
         <Tabs.Item
           label={
