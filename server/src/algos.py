@@ -43,11 +43,7 @@ def compute_fin_health(df):
     income_rate = estimate_rate(income)
     expenses_rate = estimate_rate(expenses)
 
-    if income_rate > 0:
-        return 100. * sigmoid(1 - expenses_rate/income_rate)
-    else:
-        return 100. * sigmoid(1 - income_rate/expenses_rate)
-
+    return 100. * sigmoid(1.5 * (income_rate-expense_rate))
 
 
 def estimate_survivability(df, init_amt=INIT_AMT):
@@ -65,7 +61,7 @@ def estimate_survivability(df, init_amt=INIT_AMT):
 
 def compute_robustness(df, init_amt=INIT_AMT):
     surv = estimate_survivability(df, init_amt)
-    return 100*(1 - math.exp(-surv))
+    return 100*(1 - math.exp(-surv/5))
 
 def get_terminal_val(df):
     return df.iloc[-3:-1,0].mean()
