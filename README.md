@@ -1,5 +1,14 @@
-# Fin-Wrapped
+![image](https://user-images.githubusercontent.com/28642011/105716178-7d53f080-5f44-11eb-8d92-64af12a990a5.png)
+
+<h3 align="center">
 A tool to empower small businesses to become financially healthy and crisis-proof.
+</h3>
+  
+![GitHub top language](https://img.shields.io/github/languages/top/sauravhiremath/hex-cambridge-2021?style=for-the-badge)
+![GitHub repo size](https://img.shields.io/github/repo-size/sauravhiremath/hex-cambridge-2021?style=for-the-badge)
+![GitHub issues](https://img.shields.io/github/issues/sauravhiremath/hex-cambridge-2021?style=for-the-badge)
+![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/sauravhiremath/hex-cambridge-2021?style=for-the-badge)
+![GitHub contributors](https://img.shields.io/github/contributors/sauravhiremath/hex-cambridge-2021?style=for-the-badge)
 
 #### _BlackRock Challenge - Cambridge Hex_
 
@@ -20,7 +29,7 @@ Fin-Wrapped provided BlackRock an easy and scalable way to deliver its research 
 Three-layer web application framework: data layer, logic layer, display layer. Not only is this an effective web-framework, but it also gives rise to a natural distribution of work within our team. Ziyou built the data layer, Kyle and Fernando worked on algorithms in the logic layer, and Saurav implemented the display layer. 
 
 #### Technologies used
-- Display layer: React.js
+- Display layer: `React.js`
 - Logic layer: `pandas`, `flask`
 - Data layer:  `datastax`, `google-cloud`
 - Project managment: GitHub
