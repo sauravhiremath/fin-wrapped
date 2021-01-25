@@ -4,11 +4,11 @@
 A tool to empower small businesses to become financially healthy and crisis-proof.
 </h3>
   
-![GitHub top language](https://img.shields.io/github/languages/top/sauravhiremath/hex-cambridge-2021?style=for-the-badge)
-![GitHub repo size](https://img.shields.io/github/repo-size/sauravhiremath/hex-cambridge-2021?style=for-the-badge)
-![GitHub issues](https://img.shields.io/github/issues/sauravhiremath/hex-cambridge-2021?style=for-the-badge)
-![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/sauravhiremath/hex-cambridge-2021?style=for-the-badge)
-![GitHub contributors](https://img.shields.io/github/contributors/sauravhiremath/hex-cambridge-2021?style=for-the-badge)
+![GitHub top language](https://img.shields.io/github/languages/top/sauravhiremath/fin-wrapped?style=for-the-badge)
+![GitHub repo size](https://img.shields.io/github/repo-size/sauravhiremath/fin-wrapped?style=for-the-badge)
+![GitHub issues](https://img.shields.io/github/issues/sauravhiremath/fin-wrapped?style=for-the-badge)
+![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/sauravhiremath/fin-wrapped?style=for-the-badge)
+![GitHub contributors](https://img.shields.io/github/contributors/sauravhiremath/fin-wrapped?style=for-the-badge)
 
 #### _BlackRock Challenge - Cambridge Hex_
 
