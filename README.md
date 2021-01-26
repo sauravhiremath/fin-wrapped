@@ -39,3 +39,9 @@ Our first priority would be to expand the capacity for hypothetical scenario-bas
 
 Additionally, we would like to create more example businesses for product testing, enhance the database to be more user-oriented, and support direct bank account linking. In the fully deployed product, we would provide monthly reports by email. 
 
+## Authors
+
+* **Saurav M. Hiremath** - *User interface development* - [LinkedIn](https://www.linkedin.com/in/sauravmh/)
+* **Ziyou Zhang** - *Cloud infrastructure, database, data processing* - [LinkedIn](https://www.linkedin.com/in/ziyou-zhang/)
+* **Kyle J Duffy** - *Financial model design and implementation* - [LinkedIn](https://www.linkedin.com/in/kyle-j-duffy-9b11259b/)
+* **Fernando Almansa** - *Financial model design and implementation* - [LinkedIn](https://www.linkedin.com/in/fernando-almansa-1ba085198/)
